@@ -15,37 +15,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source.c">
+    <ClCompile Include="TestRegisterUser.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RegisterUser.c">
+    <ClCompile Include="..\TeamBasedSoftware-Sec2-Group 10\RegisterUser.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="loginUser.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CheckUserExists.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UpdateUserPassword.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DeleteUser.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ReadUsersFromFile.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WriteUsersToFile.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FreeUserMemory.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="UserAuthentication.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

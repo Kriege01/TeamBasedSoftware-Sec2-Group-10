@@ -15,36 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source.c">
+    <ClCompile Include="REQ-AUTH-001.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RegisterUser.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="loginUser.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CheckUserExists.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UpdateUserPassword.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DeleteUser.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ReadUsersFromFile.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WriteUsersToFile.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FreeUserMemory.c">
+    <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="UserAuthentication.h">
+    <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

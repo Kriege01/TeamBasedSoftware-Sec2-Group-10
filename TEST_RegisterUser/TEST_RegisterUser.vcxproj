@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{b0ef922f-58f1-40af-aea8-bfd2b3a20b7f}</ProjectGuid>
-    <RootNamespace>TeamBasedSoftwareSec2Group10</RootNamespace>
+    <ProjectGuid>{06bfac92-09b1-4a12-ae9f-0edc26f365e9}</ProjectGuid>
+    <RootNamespace>TESTRegisterUser</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -127,18 +127,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CheckUserExists.c" />
-    <ClCompile Include="DeleteUser.c" />
-    <ClCompile Include="FreeUserMemory.c" />
-    <ClCompile Include="loginUser.c" />
-    <ClCompile Include="ReadUsersFromFile.c" />
-    <ClCompile Include="RegisterUser.c" />
-    <ClCompile Include="Source.c" />
-    <ClCompile Include="UpdateUserPassword.c" />
-    <ClCompile Include="WriteUsersToFile.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="UserAuthentication.h" />
+    <ClCompile Include="..\TeamBasedSoftware-Sec2-Group 10\RegisterUser.c" />
+    <ClCompile Include="TestRegisterUser.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
