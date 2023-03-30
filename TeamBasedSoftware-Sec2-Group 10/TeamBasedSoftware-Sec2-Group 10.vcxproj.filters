@@ -18,5 +18,34 @@
     <ClCompile Include="Source.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CreateTicket.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UpdateTicketStatus.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewTicketDetails.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AddFeedback.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewFeedback.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SearchTickets.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveTickets.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadTickets.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CustomerSupport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

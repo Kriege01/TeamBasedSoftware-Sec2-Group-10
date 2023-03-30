@@ -127,7 +127,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AddFeedback.c" />
+    <ClCompile Include="CreateTicket.c" />
+    <ClCompile Include="LoadTickets.c" />
+    <ClCompile Include="SaveTickets.c" />
+    <ClCompile Include="SearchTickets.c" />
     <ClCompile Include="Source.c" />
+    <ClCompile Include="UpdateTicketStatus.c" />
+    <ClCompile Include="ViewFeedback.c" />
+    <ClCompile Include="ViewTicketDetails.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CustomerSupport.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
