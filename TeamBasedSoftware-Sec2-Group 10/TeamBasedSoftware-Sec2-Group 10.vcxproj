@@ -127,7 +127,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FlightInfo.c" />
+    <ClCompile Include="SeatReservation.c" />
     <ClCompile Include="Source.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Airline.dat" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FlightInfo.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
