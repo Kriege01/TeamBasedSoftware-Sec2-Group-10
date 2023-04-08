@@ -129,11 +129,13 @@
   <ItemGroup>
     <ClCompile Include="CheckUserExists.c" />
     <ClCompile Include="DeleteUser.c" />
+    <ClCompile Include="DisplayUsers.c" />
     <ClCompile Include="FreeUserMemory.c" />
+    <ClCompile Include="GetUserIndex.c" />
     <ClCompile Include="loginUser.c" />
     <ClCompile Include="ReadUsersFromFile.c" />
     <ClCompile Include="RegisterUser.c" />
-    <ClCompile Include="Source.c" />
+    <ClCompile Include="UserAuthenticationMenu.c" />
     <ClCompile Include="UpdateUserPassword.c" />
     <ClCompile Include="WriteUsersToFile.c" />
   </ItemGroup>

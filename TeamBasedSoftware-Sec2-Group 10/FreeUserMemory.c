@@ -1,8 +1,9 @@
 #include "UserAuthentication.h"
 
-void freeUserMemory(char** users, int numUsers) {
-    for (int i = 0; i < numUsers; i++) {
-        free(users[i]);
+void freeUserMemory(User* user) {
+    if (user != NULL) {
+        free(user->username);
+        free(user->password);
+        free(user);
     }
-    free(users);
 }

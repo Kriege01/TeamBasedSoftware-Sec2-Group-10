@@ -1,18 +1,13 @@
 #include "UserAuthentication.h"
 
-int writeUsersToFile(char* filepath, User** users) {
-    FILE* file = fopen(filepath, "w");
-    if (file == NULL) {
-        return 0;
+void writeUsersToFile(char* filename) {
+    FILE* fp = fopen(filename, "w");
+    if (fp == NULL) {
+        perror("Error opening file");
+        exit(1);
     }
-
-    for (int i = 0; i < MAX_USERS; i++) {
-        User* user = users[i];
-        if (user != NULL) {
-            fprintf(file, "%s,%s\n", user->username, user->password);
-        }
+    for (int i = 0; i < numUsers; i++) {
+        fprintf(fp, "%s %s\n", users[i].username, users[i].password);
     }
-
-    fclose(file);
-    return 1;
+    fclose(fp);
 }

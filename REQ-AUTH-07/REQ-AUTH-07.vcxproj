@@ -20,12 +20,11 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
-    <ProjectGuid>{0C9C6ECA-21AD-46D3-B750-F06E1F065641}</ProjectGuid>
+    <ProjectGuid>{2ECD7B33-6E51-484A-BF27-D6F4E0C2516B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>REQAUTH001</RootNamespace>
+    <RootNamespace>REQAUTH07</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectSubType>NativeUnitTestProject</ProjectSubType>
-    <ProjectName>REQ-AUTH-01</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -78,6 +77,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\rykup\source\repos\TeamBasedSoftware-Sec2-Group-10\TeamBasedSoftware-Sec2-Group 10;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -101,7 +101,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>C:\Users\rykup\source\repos\TeamBasedSoftware-Sec2-Group-10\TeamBasedSoftware-Sec2-Group 10\x64\Debug;$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>CheckUserExists.obj;RegisterUser.obj;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>WriteUsersToFile.obj;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -164,7 +164,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="REQ-AUTH-01.cpp" />
+    <ClCompile Include="REQ-AUTH-07.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

@@ -1,10 +1,10 @@
 #include "UserAuthentication.h"
 
-int checkUserExists(char* username) {
+int getUserIndex(char* username) {
 	for (int i = 0; i < numUsers; i++) {
 		if (strcmp(users[i].username, username) == 0) {
-			return 1;
+			return i;
 		}
 	}
-	return 0;
+	return -1;
 }
