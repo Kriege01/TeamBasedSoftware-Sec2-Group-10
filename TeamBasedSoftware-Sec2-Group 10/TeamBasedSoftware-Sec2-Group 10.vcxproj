@@ -21,6 +21,16 @@
   <ItemGroup>
     <ClCompile Include="Main.c" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="tickets.txt" />
+    <Text Include="users.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Airline.dat" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Main.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -105,7 +115,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE  </PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
