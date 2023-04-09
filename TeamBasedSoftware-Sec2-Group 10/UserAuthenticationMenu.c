@@ -4,6 +4,8 @@ int main() {
 readUsersFromFile("users.txt");
 int choice = 0;
 while (choice != 6) {
+	printf("Welcome to User Authentication Module\n");
+	printf("======================================\n");
 	printf("Select an option:\n");
 	printf("1. Register user\n");
 	printf("2. Delete user\n");
@@ -11,6 +13,7 @@ while (choice != 6) {
 	printf("4. Update password\n");
 	printf("5. Display registered users\n");
 	printf("6. Quit\n");
+	printf("Enter you input\n");
 	scanf("%d", &choice);
 	switch (choice) {
 	case 1:
