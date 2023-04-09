@@ -1,31 +1,40 @@
 #pragma once
+#define _CRT_SECURE_NO_WARNINGS
+
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-// Global variables
-int ticketIDCounter = 0;
+// define constants for ticket statuses
+#define OPEN 0
+#define IN_PROGRESS 1
+#define RESOLVED 2
+#define MAX_NAME_LENGTH     21
+#define MAX_ISSUE_LENGTH    163
+#define MAX_FEEDBACK_LENGTH 163
 
-// Data structures
-struct ticket {
-    int ticketID;
-    char name[50];
-    char contactInfo[50];
-    char description[100];
-    char dateTime[50];
-    char status[20];
-    int rating;
-};
+// define struct for ticket
+typedef struct {
+    int ticketNumber;
+    char* customerName;
+    char* issueDescription;
+    int status;
+    char* feedback;
+} Ticket;
 
-// Function prototypes
-int createTicket(char* name, char* contactInfo, char* description, char* dateTime);
-char* updateTicketStatus(int ticketID, char* status);
-void viewTicketDetails(int ticketID);
-void addFeedback(int ticketID, int rating);
-void viewFeedback();
-void searchTickets(char* searchCriteria);
-void saveTickets(char* filename);
-void loadTickets(char* filename);
+// define global variables
+Ticket** tickets;
+int numTickets = 0;
+int nextTicketNumber = 1;
 
-// Ticketing system database
-struct ticket tickets[100];
+// function prototypes
+void createTicket(char* customerName, char* issueDescription);
+void updateTicketStatus(int ticketNumber, int status);
+void viewAllTickets();
+void viewTicketDetails(int ticketNumber);
+void addFeedback(int ticketNumber, char* feedback);
+void saveTickets(char* fileName);
+void loadTickets(char* fileName);
+void freeTickets();
+Ticket* searchTickets(char* customerName);
