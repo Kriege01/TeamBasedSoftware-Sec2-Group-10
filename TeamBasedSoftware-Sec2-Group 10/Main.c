@@ -770,12 +770,6 @@ int FlightInfo() {
 /////////////////////////////////////////////////////////////////////////// CUSTOMER SUPPORT
 int CustomerSupport() {
 	int choice = 0;
-	char name[100], description[100], feedback[100], fileName[100];
-	int ticketNumber, status;
-	Ticket* foundTicket;
-
-	// allocate memory for ticket array
-	tickets = (Ticket**)malloc(sizeof(Ticket*));
 
 	// main menu loop
 	int running = 1;
@@ -789,88 +783,11 @@ int CustomerSupport() {
 
 		switch (choice) {
 		case 1:
-			printf("Employee Menu\n");
-			printf("1. Update Ticket Status\n");
-			printf("2. View All Tickets\n");
-			printf("3. Add Feedback\n");
-			printf("4. Search Tickets\n");
-			printf("5. Return to Main Menu\n");
-			printf("Enter your choice: ");
-			scanf("%d", &choice);
-
-			switch (choice) {
-			case 1:
-				printf("Enter ticket number: ");
-				scanf("%d", &ticketNumber);
-				printf("Enter status (0 for open, 1 for in progress, 2 for resolved): ");
-				scanf("%d", &status);
-				updateTicketStatus(ticketNumber, status);
-				break;
-			case 2:
-				viewAllTickets();
-				break;
-			case 3:
-				printf("Enter ticket number: ");
-				scanf("%d", &ticketNumber);
-				printf("Enter feedback: ");
-				scanf("%s", feedback);
-				addFeedback(ticketNumber, feedback);
-				break;
-			case 4:
-				printf("Enter customer name: ");
-				scanf("%s", name);
-				foundTicket = searchTickets(name);
-				if (foundTicket == NULL) {
-					printf("No tickets found for customer %s\n", name);
-				}
-				else {
-					printf("Ticket found: %d\n", foundTicket->ticketNumber);
-					viewTicketDetails(foundTicket->ticketNumber);
-				}
-				break;
-			case 5:
-				choice = 0; // reset choice to trigger menu prompt again
-				break;
-			default:
-				printf("Invalid choice\n");
-				choice = 0; // reset choice to trigger menu prompt again
-				break;
-			}
-			break;
+			employeeMenu();
 		case 2:
-			printf("Customer Menu\n");
-			printf("1. Create Ticket\n");
-			printf("2. View Ticket Details\n");
-			printf("3. Return to Main Menu\n");
-			printf("Enter your choice: ");
-			scanf("%d", &choice);
-
-			switch (choice) {
-			case 1:
-				printf("Enter your name: ");
-				scanf("%s", name);
-				printf("Enter issue description: ");
-				scanf("%s", description);
-				createTicket(name, description);
-				printf("Ticket created with number %d\n", nextTicketNumber);
-				nextTicketNumber++;
-				break;
-			case 2:
-				printf("Enter ticket number: ");
-				scanf("%d", &ticketNumber);
-				viewTicketDetails(ticketNumber);
-				break;
-			case 3:
-				freeTickets();
-				running = 0; // set running to false to exit the loop
-				break;
-			default:
-				printf("Invalid choice\n");
-				break;
-			}
-			break;
+			customerMenu();
 		case 3:
-			freeTickets();
+			//freeTickets();
 			running = 0; // set running to false to exit the loop
 			break;
 		default:
@@ -882,177 +799,240 @@ int CustomerSupport() {
 }
 
 
-void createTicket(char* customerName, char* issueDescription) {
-	// allocate memory for a new ticket
-	Ticket* newTicket = (Ticket*)malloc(sizeof(Ticket));
-	if (newTicket == NULL) {
-		printf("Error: memory allocation failed\n");
+void loadTicketFile() {
+	FILE* fp = fopen("tickets.txt", "r");
+	if (fp == NULL) {
 		return;
 	}
 
-	// initialize ticket fields
-	newTicket->ticketNumber = nextTicketNumber;
+	int id;
+	char name[MAX_NAME_LENGTH];
+	char description[MAX_DESCRIPTION_LENGTH];
+	char feedback[MAX_FEEDBACK_LENGTH];
+	char status[7];
 
-	// read customer name
+	while (fscanf(fp, "%d,%[^,],%[^,],%[^,],%s\n", &id, name, description, feedback, status) != EOF) {
+		Ticket ticket = { id, "", "", "", "" };
+		strcpy(ticket.customer_name, name);
+		strcpy(ticket.description, description);
+		strcpy(ticket.feedback, feedback);
+		strcpy(ticket.status, status);
+		tickets[num_tickets++] = ticket;
+	}
+
+	fclose(fp);
+}
+
+void saveTicketFile() {
+	FILE* fp = fopen("tickets.txt", "w");
+	if (fp == NULL) {
+		printf("Error: Could not open file for writing.\n");
+		return;
+	}
+
+	for (int i = 0; i < num_tickets; i++) {
+		fprintf(fp, "%d,%s,%s,%s,%s\n", tickets[i].id, tickets[i].customer_name, tickets[i].description, tickets[i].feedback, tickets[i].status);
+	}
+
+	fclose(fp);
+}
+
+int readTicketFile() {
+	FILE* fp = fopen("tickets.txt", "r");
+	if (fp == NULL) {
+		printf("Error: Could not open file for reading.\n");
+		return -1;
+	}
+
+	int id;
+	char name[MAX_NAME_LENGTH];
+	char description[MAX_DESCRIPTION_LENGTH];
+	char feedback[MAX_FEEDBACK_LENGTH];
+	char status[7];
+
+	printf("ID | Customer Name | Description | Feedback | Status\n");
+	printf("----------------------------------------------------\n");
+
+	while (fscanf(fp, "%d,%[^,],%[^,],%[^,],%s\n", &id, name, description, feedback, status) != EOF) {
+		printf("%2d | %-13s | %-11s | %-7s | %s\n", id, name, description, feedback, status);
+	}
+
+	fclose(fp);
+	return 0;
+}
+
+void createTicket() {
+	Ticket ticket = { 0, "", "", "", "open" };
+
 	printf("Enter customer name: ");
-	fflush(stdin); // flush the input buffer to prevent reading leftover characters
-	fgets(customerName, MAX_NAME_LENGTH, stdin);
-	customerName[strcspn(customerName, "\n")] = '\0'; // remove newline character at end of string
-	newTicket->customerName = _strdup(customerName);
+	scanf("%s", ticket.customer_name);
 
-	// read issue description
-	printf("Enter issue description: ");
-	fflush(stdin); // flush the input buffer to prevent reading leftover characters
-	fgets(issueDescription, MAX_ISSUE_LENGTH, stdin);
-	issueDescription[strcspn(issueDescription, "\n")] = '\0'; // remove newline character at end of string
-	newTicket->issueDescription = _strdup(issueDescription);
+	printf("Enter description: ");
+	scanf(" %[^\n]s", ticket.description);
 
-	newTicket->status = 0; // open status by default
-	newTicket->feedback = NULL;
+	ticket.id = ++num_tickets;
+	tickets[num_tickets - 1] = ticket;
 
-	// add new ticket to array
-	numTickets++;
-	tickets = (Ticket**)realloc(tickets, numTickets * sizeof(Ticket*));
-	tickets[numTickets - 1] = newTicket;
+	printf("Ticket created successfully with ID %d.\n", ticket.id);
+
+	saveTicketFile();
 }
 
 
-void createTicketWrapper() {
-	char customerName[100], issueDescription[100];
-	printf("Enter your name: ");
-	scanf("%s", customerName);
-	printf("Enter issue description: ");
-	getchar(); // consume newline character
-	fgets(issueDescription, 100, stdin);
-	// remove trailing newline character from issue description
-	issueDescription[strcspn(issueDescription, "\n")] = '\0';
-	createTicket(customerName, issueDescription);
-	printf("Ticket created with number %d\n", nextTicketNumber);
-	nextTicketNumber++;
-}
+void viewTicketDetails() {
+	int id;
 
+	printf("Enter ticket ID: ");
+	scanf("%d", &id);
 
-void updateTicketStatus(int ticketNumber, int status) {
-	int i;
-	for (i = 0; i < numTickets; i++) {
-		if (tickets[i]->ticketNumber == ticketNumber) {
-			tickets[i]->status = status;
+	for (int i = 0; i < num_tickets; i++) {
+		if (tickets[i].id == id) {
+			printf("ID: %d\n", tickets[i].id);
+			printf("Customer name: %s\n", tickets[i].customer_name);
+			printf("Description: %s\n", tickets[i].description);
+			printf("Feedback: %s\n", tickets[i].feedback);
+			printf("Status: %s\n", tickets[i].status);
 			return;
 		}
 	}
-	printf("Ticket not found\n");
+
+	printf("Error: Ticket with ID %d not found.\n", id);
+}
+
+void addFeedback() {
+	int id;
+	printf("Enter ticket ID: ");
+	scanf("%d", &id);
+
+	for (int i = 0; i < num_tickets; i++) {
+		if (tickets[i].id == id) {
+			printf("Enter feedback: ");
+			scanf(" %[^\n]s", tickets[i].feedback);
+			printf("Feedback added successfully.\n");
+
+			saveTicketFile();
+			return;
+		}
+	}
+
+	printf("Error: Ticket with ID %d not found.\n", id);
+}
+
+void updateTicketStatus() {
+	int id;
+	printf("Enter ticket ID: ");
+	scanf("%d", &id);
+
+	for (int i = 0; i < num_tickets; i++) {
+		if (tickets[i].id == id) {
+			printf("Enter status (open/closed): ");
+			scanf("%s", tickets[i].status);
+			printf("Status updated successfully.\n");
+
+			saveTicketFile();
+			return;
+		}
+	}
+
+	printf("Error: Ticket with ID %d not found.\n", id);
+}
+
+void searchTickets() {
+	char keyword[MAX_TICKET_LENGTH];
+	printf("Enter search keyword: ");
+	scanf("%s", keyword);
+
+	printf("ID | Customer Name | Description | Feedback | Status\n");
+	printf("----------------------------------------------------\n");
+
+	for (int i = 0; i < num_tickets; i++) {
+		if (strstr(tickets[i].description, keyword) != NULL) {
+			printf("%2d | %-13s | %-11s | %-7s | %s\n", tickets[i].id, tickets[i].customer_name, tickets[i].description, tickets[i].feedback, tickets[i].status);
+		}
+	}
 }
 
 void viewAllTickets() {
-	int i;
-	printf("Ticket Number\tCustomer Name\tIssue Description\tStatus\n");
-	for (i = 0; i < numTickets; i++) {
-		printf("%d\t%s\t%s\t%d\n", tickets[i]->ticketNumber, tickets[i]->customerName, tickets[i]->issueDescription, tickets[i]->status);
+	int id;
+	char name[MAX_NAME_LENGTH];
+	char description[MAX_DESCRIPTION_LENGTH];
+	char feedback[MAX_FEEDBACK_LENGTH];
+	char status[7];
+
+	printf("ID | Customer Name | Description | Feedback | Status\n");
+	printf("----------------------------------------------------\n");
+
+	for (int i = 0; i < num_tickets; i++) {
+		id = tickets[i].id;
+		strcpy(name, tickets[i].customer_name);
+		strcpy(description, tickets[i].description);
+		strcpy(feedback, tickets[i].feedback);
+		strcpy(status, tickets[i].status);
+
+		printf("%2d | %-13s | %-11s | %-7s | %s\n", id, name, description, feedback, status);
 	}
 }
 
-void viewTicketDetails(int ticketNumber) {
-	int i;
-	for (i = 0; i < numTickets; i++) {
-		if (tickets[i]->ticketNumber == ticketNumber) {
-			printf("Ticket Number: %d\n", tickets[i]->ticketNumber);
-			printf("Customer Name: %s\n", tickets[i]->customerName);
-			printf("Issue Description: %s\n", tickets[i]->issueDescription);
-			printf("Status: %d\n", tickets[i]->status);
-			if (tickets[i]->feedback != NULL) {
-				printf("Feedback: %s\n", tickets[i]->feedback);
-			}
-			return;
-		}
-	}
-	printf("Ticket not found\n");
-}
 
-void addFeedback(int ticketNumber, char* feedback) {
-	// find the ticket with the given number
-	int i;
-	for (i = 0; i < numTickets; i++) {
-		if (tickets[i]->ticketNumber == ticketNumber) {
-			// allocate memory for the feedback string
-			tickets[i]->feedback = (char*)malloc(MAX_FEEDBACK_LENGTH * sizeof(char));
+void customerMenu() {
+	int choice;
+	do {
+		printf("\nCustomer Menu:\n");
+		printf("1. Create Ticket\n");
+		printf("2. View Ticket Details\n");
+		printf("3. Exit\n");
+		printf("Enter choice (1-3): ");
+		scanf("%d", &choice);
 
-			// prompt user to enter feedback
-			printf("Enter feedback: ");
-			fgets(tickets[i]->feedback, MAX_FEEDBACK_LENGTH, stdin);
-
-			// remove trailing newline character from input
-			tickets[i]->feedback[strcspn(tickets[i]->feedback, "\n")] = '\0';
+		switch (choice) {
+		case 1:
+			createTicket();
+			break;
+		case 2:
+			viewTicketDetails();
+			break;
+		case 3:
+			printf("Goodbye!\n");
+			break;
+		default:
+			printf("Error: Invalid choice.\n");
 			break;
 		}
-	}
-	if (i == numTickets) {
-		printf("Ticket not found\n");
-	}
+	} while (choice != 3);
 }
 
+void employeeMenu() {
+	int choice;
+	do {
+		printf("\nEmployee Menu:\n");
+		printf("1. Search Tickets\n");
+		printf("2. View All Tickets\n");
+		printf("3. Update Ticket Status\n");
+		printf("4. Add Feedback\n");
+		printf("5. Exit\n");
+		printf("Enter choice (1-5): ");
+		scanf("%d", &choice);
 
-void saveTickets(char* fileName) {
-	int i;
-	FILE* fp = fopen(fileName, "w");
-	if (fp == NULL) {
-		printf("Error opening file\n");
-		return;
-	}
-	fprintf(fp, "%d\n", numTickets);
-	for (i = 0; i < numTickets; i++) {
-		fprintf(fp, "%d %s %s %d", tickets[i]->ticketNumber, tickets[i]->customerName, tickets[i]->issueDescription, tickets[i]->status);
-		if (tickets[i]->feedback != NULL) {
-			fprintf(fp, " %s", tickets[i]->feedback);
+		switch (choice) {
+		case 1:
+			searchTickets();
+			break;
+		case 2:
+			viewAllTickets();
+			break;
+		case 3:
+			updateTicketStatus();
+			break;
+		case 4:
+			addFeedback();
+			break;
+		case 5:
+			printf("Goodbye!\n");
+			break;
+		default:
+			printf("Error: Invalid choice.\n");
+			break;
 		}
-		fprintf(fp, "\n");
-	}
-	fclose(fp);
+	} while (choice != 5);
 }
 
-void loadTickets(char* fileName) {
-	int i, n, ticketNumber, status;
-	char customerName[MAX_NAME_LENGTH], issueDescription[MAX_ISSUE_LENGTH], feedback[MAX_FEEDBACK_LENGTH];
-	FILE* fp = fopen(fileName, "r");
-	if (fp == NULL) {
-		printf("Error opening file\n");
-		return;
-	}
-	fscanf(fp, "%d", &n);
-	for (i = 0; i < n; i++) {
-		fscanf(fp, "%d %s %s %d", &ticketNumber, customerName, issueDescription, &status);
-		fgets(feedback, MAX_FEEDBACK_LENGTH, fp);
-		if (feedback[strlen(feedback) - 1] == '\n') {
-			feedback[strlen(feedback) - 1] = '\0';
-		}
-		createTicket(customerName, issueDescription);
-		tickets[i]->ticketNumber = ticketNumber;
-		tickets[i]->status = status;
-		if (strcmp(feedback, "NULL") != 0) {
-			tickets[i]->feedback = _strdup(feedback);
-		}
-	}
-	fclose(fp);
-}
-
-void freeTickets() {
-	int i;
-	for (i = 0; i < numTickets; i++) {
-		free(tickets[i]->customerName);
-		free(tickets[i]->issueDescription);
-		if (tickets[i]->feedback != NULL) {
-			free(tickets[i]->feedback);
-		}
-		free(tickets[i]);
-	}
-	free(tickets);
-}
-
-Ticket* searchTickets(char* customerName) {
-	int i;
-	for (i = 0; i < numTickets; i++) {
-		if (strcmp(tickets[i]->customerName, customerName) == 0) {
-			return tickets[i];
-		}
-	}
-	return NULL;
-}
